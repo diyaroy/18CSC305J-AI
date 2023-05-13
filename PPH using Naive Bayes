@@ -1,0 +1,59 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import accuracy_score
+
+# Load the data into a Pandas dataframe
+data = pd.read_csv('ai.csv')
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(data.drop('homeless', axis=1), data['homeless'], test_size=0.2)
+
+# Train the SVM model
+classifier = GaussianNB()  
+classifier.fit(X_train, y_train)
+
+# Use the model to make predictions on the testing data
+predictions = classifier.predict(X_test)
+
+# Evaluate the accuracy of the model
+accuracy = accuracy_score(y_test, predictions)
+print("Accuracy:", accuracy*100)
+
+from sklearn.cluster import KMeans
+
+# Perform K-means clustering on the data
+kmeans = KMeans(n_clusters=5)
+kmeans.fit(data.drop('homeless', axis=1))
+
+# Assign each individual to a cluster based on their risk factors
+labels = kmeans.predict(data.drop('homeless', axis=1))
+data['cluster'] = labels
+
+# Identify the characteristics of each cluster
+for i in range(5):
+    print('\n')
+    print("Cluster ", i+1)
+    print(data[data['cluster'] == i].mean())
+
+print("\n\n")
+age = float(input("Enter your age: "))
+gender = float(input("\nEnter your gender:\nMale - 1\nFemale - 0\n"))
+family_size = float(input("\nEnter your family size:"))
+education_level = int(input("\nEnter your education level\nHigh School - 0\nCollege - 1\n: "))
+employment_status = int(input("\nEnter your employment status:\nEmployed(Full-time) - 2\nPart-time/Retired - 1\nUnemployed - 0\n"))
+income = float(input("\nEnter your monthly income: "))
+housing_cost = float(input("\nEnter your monthly housing cost: "))
+health_status = float(input("\nEnter your health status:\nGood - 2\nFair - 1\nPoor - 0\n"))
+
+# create a dataframe with the user input
+df = pd.DataFrame({'age': [age], 'gender': [gender], 'family_size': [family_size],
+                   'education_level': [education_level], 'employment_status': [employment_status],
+                   'income': [income], 'housing_cost': [housing_cost], 'health_status': [health_status]})
+
+pred = classifier.predict(df)
+print("\n")
+if pred==1:
+    print("Prediction: Likely")
+else:
+    print("Prediction: Not Likely")
