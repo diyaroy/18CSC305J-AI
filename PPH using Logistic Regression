@@ -51,7 +51,7 @@ df = pd.DataFrame({'age': [age], 'gender': [gender], 'family_size': [family_size
                    'education_level': [education_level], 'employment_status': [employment_status],
                    'income': [income], 'housing_cost': [housing_cost], 'health_status': [health_status]})
 
-pred = classifier.predict(df)
+pred = logr.predict(df)
 print("\n")
 if pred==1:
     print("Prediction: Likely")
