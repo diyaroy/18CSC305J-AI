@@ -11,7 +11,7 @@ X_train, X_test, y_train, y_test = train_test_split(data.drop('homeless', axis=1
 
 # Train the SVM model
 logr = linear_model.LogisticRegression()
-logr.fit(X,y)
+logr.fit(X_train,y_train)
 
 # Use the model to make predictions on the testing data
 predictions = logr.predict(X_test)
